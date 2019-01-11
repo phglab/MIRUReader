@@ -1,6 +1,6 @@
 # firstprojectcode
 
-Determine MIRU profile for Mycobacterium tuberculosis directly from Oxford Nanopore reads.
+Determine MIRU profile for *Mycobacterium tuberculosis* directly from Oxford Nanopore reads.
 
 Requires primersearch from EMBOSS
 
