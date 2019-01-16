@@ -1,3 +1,5 @@
+#Copyright 2019 Cheng Yee Tang (chengyee.tang@nus.edu.sg)
+
 import os
 import sys
 import argparse
