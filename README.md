@@ -1,17 +1,11 @@
-# firstprojectcode
+# MIRUFinder
 
-<<<<<<< HEAD
+## Description
+Identify 24 MIRU loci for *Mycobacterium tuberculosis* directly from long reads by Oxford Nanopore Technology (ONT) and PacBio. Also work on assembled genome.
+Inspired from MIRU-Profiler tool
+
+## Dependancy
 Requires primersearch from EMBOSS
-=======
-Determine MIRU profile for *Mycobacterium tuberculosis* directly from Oxford Nanopore reads.
 
-Requires primersearch from EMBOSS
-
-Idea inspired by MIRU-Profiler tool
-
-How to run:
-
+## How to run:
 python MIRUFinder.py sample.fasta
-
-Work on ONT reads file and assembled genome
->>>>>>> 38ea3e58378177c405620f399c88420f38e8f8c8
