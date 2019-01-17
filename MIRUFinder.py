@@ -98,39 +98,46 @@ with open(psearchOut, 'r') as infile:
             if amplicon > 1828:
                 lookup.setdefault(primerID).append('NA')
             elif loci == '0580':
-                for i in range(26):
-                    if amplicon < df_0580[loci][i]:
-                        if i != 0:
-                            first = df_0580[loci][i-1]
-                            second = df_0580[loci][i]
-                            if abs(amplicon - first) > abs(amplicon - second):
-                                repeats.setdefault(loci).append(df_0580['No.'][i])
-                                lookup.setdefault(primerID).append(df_0580['No.'][i])
-                                break
+                if amplicon > df_0580[loci][25]:
+                    lookup.setdefault(primerID).append('NA')
+                else:
+                    for i in range(26):
+                        if amplicon < df_0580[loci][i]:
+                            if i != 0:
+                                first = df_0580[loci][i-1]
+                                second = df_0580[loci][i]
+                                if abs(amplicon - first) > abs(amplicon - second):
+                                    repeats.setdefault(loci).append(df_0580['No.'][i])
+                                    lookup.setdefault(primerID).append(df_0580['No.'][i])
+                                    break
+                                else:
+                                    repeats.setdefault(loci).append(df_0580['No.'][i-1])
+                                    lookup.setdefault(primerID).append(df_0580['No.'][i-1])
+                                    break
                             else:
-                                repeats.setdefault(loci).append(df_0580['No.'][i-1])
-                                lookup.setdefault(primerID).append(df_0580['No.'][i-1])
-                                break
-                        else:
-                            repeats.setdefault(loci).append(0)
-                            lookup.setdefault(primerID).append(0)
+                                repeats.setdefault(loci).append(0)
+                                lookup.setdefault(primerID).append(0)
+                        
             else:
-                for i in range(16):
-                    if amplicon < df[loci][i]:
-                        if i != 0:
-                            first = df[loci][i-1]
-                            second = df[loci][i]
-                            if abs(amplicon - first) > abs(amplicon - second):
-                                repeats.setdefault(loci).append(i)
-                                lookup.setdefault(primerID).append(i)
-                                break
+                if amplicon > df[loci][15]:
+                    lookup.setdefault(primerID).append('NA')
+                else:
+                    for i in range(16):
+                        if amplicon < df[loci][i]:
+                            if i != 0:
+                                first = df[loci][i-1]
+                                second = df[loci][i]
+                                if abs(amplicon - first) > abs(amplicon - second):
+                                    repeats.setdefault(loci).append(i)
+                                    lookup.setdefault(primerID).append(i)
+                                    break
+                                else:
+                                    repeats.setdefault(loci).append(i-1)
+                                    lookup.setdefault(primerID).append(i-1)
+                                    break
                             else:
-                                repeats.setdefault(loci).append(i-1)
-                                lookup.setdefault(primerID).append(i-1)
-                                break
-                        else:
-                            repeats.setdefault(loci).append(0)
-                            lookup.setdefault(primerID).append(0)
+                                repeats.setdefault(loci).append(0)
+                                lookup.setdefault(primerID).append(0)
 
 if args.details:
     for key, value in lookup.items():
