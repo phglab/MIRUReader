@@ -37,7 +37,7 @@ def chooseMode(name, table, CounterList):
             duplicates = 'yes'
     finalMode = ''
     if duplicates == 'yes':
-        finalMode = '/'.join(str(r) for r in mismatchDict.keys())
+        finalMode = '/'.join(str(r) for min_value in (min(mismatchDict.values()),) for r in mismatchDict if mismatchDict[r]==min_value)
     else:
         finalMode = min(mismatchDict.keys(), key=(lambda k: mismatchDict[k]))
     return finalMode    
