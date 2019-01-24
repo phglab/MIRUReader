@@ -1,4 +1,4 @@
-# MIRUFinder
+# MIRUReader
 
 ## Description
 Identify 24 MIRU loci for *Mycobacterium tuberculosis* directly from long reads by Oxford Nanopore Technology (ONT) and PacBio. Also work on assembled genome.
