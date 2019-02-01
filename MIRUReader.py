@@ -158,6 +158,6 @@ for item in miru:
             repeat = chooseMode(item, lookup, Counter(repeats[item]))
             miru_repeats[item][0] = repeat
     else:
-        miru_repeats[item][0] = "nohit"
+        miru_repeats[item][0] = "ND"
 
 print(miru_repeats.to_csv(sep='\t', index=False, header=True))
