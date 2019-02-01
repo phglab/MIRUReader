@@ -19,12 +19,18 @@ Identify 24-locus MIRU-VNTR for *Mycobacterium tuberculosis* complex (MTBC) dire
 
 For one sample analysis:
 ```
-python /path/to/MIRUReader.py /path/to/sample.fasta > miru.txt
+python /your/path/to/MIRUReader.py sample.fasta > miru.txt
 ```
 
 For multiple sample analysis:
 ```
-ls /folder/*.fasta | while read line; do python /path/to/MIRUReader.py $line; done > miru.summary.txt
+ls /folder/*.fasta | while read line; do python /your/path/to/MIRUReader.py $line; done > miru.summary.txt
+```
+
+Output example:
+```
+sample_prefix   0154    0424    0577    0580    0802    0960    1644    1955    2059    2163b   2165    2347    2401    2461    2531    2687    2996    3007    3171    3192    3690    4052    4156    4348
+sample_001      2       4       4       2       3       3       3       2       2       5       4       4       4       2       5       1       6       3       3       5       3       7       2       3
 ```
 
 Notes:
