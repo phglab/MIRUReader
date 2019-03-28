@@ -65,8 +65,8 @@ MIRU_table = script_dir + "/MIRU_table"
 MIRU_table_0580 = script_dir + "/MIRU_table_0580"
 MIRU_primers = script_dir + "/MIRU_primers"
 
-df = pd.read_table(MIRU_table)
-df_0580 = pd.read_table(MIRU_table_0580)
+df = pd.read_csv(MIRU_table, sep='\t')
+df_0580 = pd.read_csv(MIRU_table_0580, sep='\t')
 miru = ['0154','0424','0577','0580','0802','0960','1644','1955','2059','2163b','2165','2347','2401','2461','2531','2687','2996','3007','3171','3192','3690','4052','4156','4348']
 
 if not args.amplicons:
