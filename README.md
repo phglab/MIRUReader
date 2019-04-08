@@ -10,6 +10,8 @@ Identify 24-locus MIRU-VNTR for *Mycobacterium tuberculosis* complex (MTBC) dire
 * primersearch from [EMBOSS](http://emboss.sourceforge.net/download/)
 * [*pandas*](https://pandas.pydata.org/) 
    * can be installed via conda `conda install pandas` or via PyPI `pip install pandas`
+* [*statisctics*](https://pypi.org/project/statistics/)
+   * can be installed via PyPI `pip install statistics`
 
 ## Installation
 
