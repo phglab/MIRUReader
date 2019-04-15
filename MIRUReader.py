@@ -1,4 +1,5 @@
-#Copyright 2019 Cheng Yee Tang (chengyee.tang@nus.edu.sg)
+#Copyright 2019 NUS pathogen genomics
+#Written by Cheng Yee Tang (chengyee.tang@nus.edu.sg)
 
 import os
 import sys
