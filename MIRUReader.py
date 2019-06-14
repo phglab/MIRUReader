@@ -54,6 +54,7 @@ parser.add_argument('-p', '--prefix', required=True, help='sample ID (required)'
 optional_group = parser.add_argument_group('Optional argument')
 optional_group.add_argument('--amplicons', help='provide output from primersearch and summarize MIRU profile directly', action='store_true')
 optional_group.add_argument('--details', help='for inspection', action='store_true')
+optional_group.add_argument('--nofasta', help='delete the fasta reads file generated if your reads are in fastq format', action='store_true')
 args = parser.parse_args()
 
 if not os.path.exists(args.reads):
@@ -186,5 +187,9 @@ for item in miru:
             miru_repeats[item][0] = repeat
     else:
         miru_repeats[item][0] = "ND"
+
+if args.nofasta:
+    if ('.fastq' in args.reads) or ('.fasta.gz' in args.reads):
+        os.remove(fastaReads)
 
 print(miru_repeats.to_csv(sep='\t', index=False, header=True))
