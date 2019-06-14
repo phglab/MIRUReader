@@ -27,9 +27,9 @@ python /your/path/to/MIRUReader.py -r sample.fasta -p sampleID > miru.txt
 For multiple samples analysis:
 1. Create a mapping file (mappingFile.txt) that looks like:
 
-sample_001.fasta sample_001
-sample_002.fasta sample_002
-...
+    sample_001.fasta sample_001 \
+    sample_002.fasta sample_002 \
+    ...
 
 2. Then run the program:
 ```
