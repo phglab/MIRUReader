@@ -19,7 +19,10 @@ Identify 24-locus MIRU-VNTR for *Mycobacterium tuberculosis* complex (MTBC) dire
 
 ## Change log
 #### 04/07/2019
-- Update output format for option '--details'
+- Update output format for option '--details'.
+
+#### 14/06/2019
+- Auto convert fastq to fasta.
 
 ## Usage example
 
