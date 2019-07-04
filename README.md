@@ -17,6 +17,10 @@ Identify 24-locus MIRU-VNTR for *Mycobacterium tuberculosis* complex (MTBC) dire
 
 `git clone https://github.com/phglab/MIRUReader.git`
 
+## Change log
+#### 04/07/2019
+- Update output format for option '--details'
+
 ## Usage example
 
 For one sample analysis:
