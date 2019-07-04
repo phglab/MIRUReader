@@ -176,9 +176,12 @@ with open(psearchOut, 'r') as infile:
                                 lookup.setdefault(primerID).append(0)
 
 if args.details:
+    myLookUp = pd.DataFrame(columns=["loci", "hit_index", "repeat_no", "error_no"])
     for key, value in lookup.items():
         #example: lookup = {'0154_1':[2,4]} total no. of mismatches, repeat number
-        print(key, value)
+        myLookUp = myLookUp.append({"loci":key.split("_")[0], "hit_index":int(key.split("_")[1]), "repeat_no":lookup[key][1], "error_no":lookup[key][0]}, ignore_index=True)
+    sortedLookUp = myLookUp.sort_values(by=["loci", "hit_index"])
+    print(sortedLookUp.to_csv(sep='\t', index=False))
     for item in miru:
         #array that used to determine repeat number
         print(Counter(repeats[item]))
