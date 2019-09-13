@@ -74,6 +74,9 @@ Notes:
 | --details | This option is for further inspection. It displays details of repeat count for each loci with total mismatch error in the primer sequences alignment. |
 | --nofasta | Delete fasta file generated if your input read is in fastq format. |
 
+## FAQ
+1. **Why are there two MIRU allele calling tables (MIRU_table and MIRU_table_0580)?** Because the allele calling table for MIRU locus 0580 has more rows compared to the other 23 MIRU loci. The program is not written to handle this at current stage.
+
 ## Troubleshooting
 
 1. If an error message `OSError: primersearch is not found.` appears, please ensure your `primersearch` executable file is in your environment path (`echo $PATH`) and can be called directly. 
