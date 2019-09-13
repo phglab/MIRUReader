@@ -8,9 +8,12 @@ Identify 24-locus MIRU-VNTR for *Mycobacterium tuberculosis* complex (MTBC) dire
 
 * Linux
 * primersearch from [EMBOSS](http://emboss.sourceforge.net/download/)
+   * install from the official website or
+   * install via conda `conda install -c bioconda emboss`
+   * make sure the primersearch command is in your device's environment path and can be called directly by typing `primersearch`
 * [*pandas*](https://pandas.pydata.org/) 
    * can be installed via conda `conda install pandas` or via PyPI `pip install pandas`
-* [*statisctics*](https://pypi.org/project/statistics/)
+* [*statistics*](https://pypi.org/project/statistics/)
    * can be installed via PyPI `pip install statistics`
 
 ## Installation
@@ -54,3 +57,7 @@ Notes:
 * The program is compatible to Python 2 and Python 3.
 * Accepted reads file format includes '.fastq', '.fastq.gz', '.fasta', and '.fasta.gz'.
 * The program output is a tab-delimited plain text which can be copied to or opened in Excel spreadsheet.
+
+## Troubleshooting
+
+1. If an error message `OSError: primersearch is not found.` appears, please ensure your `primersearch` executable file is in your environment path (`echo $PATH`) and can be called directly. 
