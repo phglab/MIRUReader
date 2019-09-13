@@ -106,9 +106,13 @@ if not args.amplicons:
             fastaReads = args.reads
 
 if not args.amplicons:
-    subprocess_args = ['primersearch', '-seqall', fastaReads, '-infile', args.primers, '-mismatchpercent', str(mismatch_allowed), '-outfile', psearchOut]
-    subprocess.call(subprocess_args)
-
+    try:
+        subprocess_args = ['primersearch', '-seqall', fastaReads, '-infile', args.primers, '-mismatchpercent', str(mismatch_allowed), '-outfile', psearchOut]
+        subprocess.call(subprocess_args)
+    except OSError:
+        print('OSError: primersearch command is not found.')
+        sys.exit()
+        
 if not os.path.exists(psearchOut):
     sys.exit('Error: ' + psearchOut + ' is not found!')
 
