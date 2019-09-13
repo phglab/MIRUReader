@@ -58,6 +58,22 @@ Notes:
 * Accepted reads file format includes '.fastq', '.fastq.gz', '.fasta', and '.fasta.gz'.
 * The program output is a tab-delimited plain text which can be copied to or opened in Excel spreadsheet.
 
+## Full usage
+
+| Main options | Description |
+| ------------ | ----------- |
+| -r READS | Input reads file in fastq/fasta format, can be gzipped or not gzipped |
+| -p PREFIX | Sample ID required for naming output file. |
+| --table TABLE | Allele calling table, default is MIRU_table. Can be user-defined in fixed format. However, providing custom allele calling table for other VNTR is not tested. |
+| --primers PRIMERS | Primers sequences, default is MIRU_primers. Can be user-defined in fixed format. |
+
+
+| Optional options | Description |
+| ---------------- | ----------- |
+| --amplicons | Use output from primersearch ("prefix.18.primersearch.out") and summarize MIRU profile directly. |
+| --details | This option is for further inspection. It displays details of repeat count for each loci with total mismatch error in the primer sequences alignment. |
+| --nofasta | Delete fasta file generated if your input read is in fastq format. |
+
 ## Troubleshooting
 
 1. If an error message `OSError: primersearch is not found.` appears, please ensure your `primersearch` executable file is in your environment path (`echo $PATH`) and can be called directly. 
