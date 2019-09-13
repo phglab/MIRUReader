@@ -10,7 +10,7 @@ Identify 24-locus MIRU-VNTR for *Mycobacterium tuberculosis* complex (MTBC) dire
 * primersearch from [EMBOSS](http://emboss.sourceforge.net/download/)
    * install from the official website or
    * install via conda `conda install -c bioconda emboss`
-   * make sure the primersearch command is in your device's environment path and can be called directly by typing `primersearch`
+   * Ensure the primersearch command is in your device's environment path, where primersearch program can be executed directly by typing `primersearch` on the commandline
 * [*pandas*](https://pandas.pydata.org/) 
    * can be installed via conda `conda install pandas` or via PyPI `pip install pandas`
 * [*statistics*](https://pypi.org/project/statistics/)
@@ -21,6 +21,10 @@ Identify 24-locus MIRU-VNTR for *Mycobacterium tuberculosis* complex (MTBC) dire
 `git clone https://github.com/phglab/MIRUReader.git`
 
 ## Change log
+#### 13/09/2019
+- Added a check to ensure primersearch is executable prior to MIRUReader program execution
+- Updated documentation to the README
+
 #### 04/07/2019
 - Update output format for option '--details'.
 
@@ -75,8 +79,10 @@ Notes:
 | --nofasta | Delete fasta file generated if your input read is in fastq format. |
 
 ## FAQ
-1. **Why are there two MIRU allele calling tables (MIRU_table and MIRU_table_0580)?** Because the allele calling table for MIRU locus 0580 has more rows compared to the other 23 MIRU loci. The program is not written to handle this at current stage.
+1. **Why are there two MIRU allele calling tables (MIRU_table and MIRU_table_0580)?** 
+
+MIRU loci 0580 (MIRU_table_0580) consist of a different numbering system for determination of repeat numbers as compared to the other 23 MIRU locus (MIRU_table) for MTBC isolates.  
+
 
 ## Troubleshooting
-
 1. If an error message `OSError: primersearch is not found.` appears, please ensure your `primersearch` executable file is in your environment path (`echo $PATH`) and can be called directly. 
