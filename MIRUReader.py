@@ -12,7 +12,28 @@ from statistics import mode
 from collections import Counter
 
 
-#function to determine repeat number based on total number of mismatches in primer sequence
+# Function that corrects the mode() function where it does not always return statistical error
+def custom_mode(List):
+    counts = Counter(List)
+    max_count = max(counts.values())
+
+    modes = [key for key, value in counts.items() if value == max_count]
+
+    if len(modes) == 1:
+        return modes[0]
+    else:
+        raise statistics.StatisticsError
+
+# Function to extract multiples modes
+def modes(List):
+    counts = Counter(List)
+    max_count = max(counts.values())
+
+    modes = [key for key, value in counts.items() if value == max_count]
+    return modes
+
+
+# Function to determine repeat number based on total number of mismatches in primer sequence
 def chooseMode(name, table, CounterList):
     maxcount = max(CounterList.values())
     repeatToCheck = []
@@ -54,15 +75,24 @@ MIRU_table_0580 = script_dir + "/MIRU_table_0580"
 MIRU_primers = script_dir + "/MIRU_primers"
 
 parser = argparse.ArgumentParser()
+
 main_group = parser.add_argument_group('Main options')
+
 main_group.add_argument('-r', '--reads', required=True, help='input reads file in fastq/fasta format (required)')
 main_group.add_argument('-p', '--prefix', required=True, help='sample ID (required)')
 main_group.add_argument('--table', type=str, default=MIRU_table, help='allele calling table')
 main_group.add_argument('--primers', type=str, default=MIRU_primers, help='primers sequences')
+
 optional_group = parser.add_argument_group('Optional options')
+
 optional_group.add_argument('--amplicons', help='provide output from primersearch and summarize MIRU profile directly', action='store_true')
-optional_group.add_argument('--details', help='for inspection', action='store_true')
+optional_group.add_argument('--mismatch', type=int, dest="mismatch", required=False, default=18, help="Allowed percent mismatch. Default: 18")
 optional_group.add_argument('--nofasta', help='delete the fasta reads file generated if your reads are in fastq format', action='store_true')
+optional_group.add_argument('--min_amplicons', type=int, dest='min_amplicons', required=False, default=3, help='Minimum number of amplicons required for a reliable result. Below this threshold, the program returns "Warning 1" for low coverage. Default: 3')
+optional_group.add_argument('--freq', type=float, dest='freq', required=False, default=0.6, help='Minimum frequency required for a reliable result. Below this threshold, the program returns "Warning 2" for an unfixed allele. Default: 0.6')
+# optional_group.add_argument('--amplicon_freq', type=int, dest='amplicon_freq', required=False, default=20, help='Number of amplicons required for reliable results with mixed alleles. Below this threshold, the program returns "Warning 2" for an unfixed allele. Default: 20')
+optional_group.add_argument('--amplicon_mode', type=int, dest='amplicon_mode', required=False, default=10, help='Number of amplicons required for reliable results. Below this threshold, the program returns "Warning 3" for a possible polyclonal allele with low coverage. Default: 10')
+
 args = parser.parse_args()
 
 if not os.path.exists(args.reads):
@@ -70,8 +100,8 @@ if not os.path.exists(args.reads):
 
 sample_prefix = args.prefix
 sample_dir = os.path.dirname(os.path.abspath(args.reads))
-mismatch_allowed = 18
-psearchOut = sample_dir + '/' + sample_prefix + '.' + str(mismatch_allowed) + '.primersearch.out'
+mismatch_allowed = args.mismatch
+psearchOut = sample_dir + '/' + sample_prefix + '.' + str(args.mismatch) + '.primersearch.out'
 
 df = pd.read_csv(MIRU_table, sep='\t')
 df_0580 = pd.read_csv(MIRU_table_0580, sep='\t')
@@ -107,7 +137,7 @@ if not args.amplicons:
 
 if not args.amplicons:
     try:
-        subprocess_args = ['primersearch', '-seqall', fastaReads, '-infile', args.primers, '-mismatchpercent', str(mismatch_allowed), '-outfile', psearchOut]
+        subprocess_args = ['primersearch', '-seqall', fastaReads, '-infile', args.primers, '-mismatchpercent', str(args.mismatch), '-outfile', psearchOut]
         subprocess.call(subprocess_args)
     except OSError:
         print('OSError: primersearch command is not found.')
@@ -179,29 +209,27 @@ with open(psearchOut, 'r') as infile:
                                 repeats.setdefault(loci).append(0)
                                 lookup.setdefault(primerID).append(0)
 
-if args.details:
-    myLookUp = pd.DataFrame(columns=["loci", "hit_index", "repeat_no", "error_no"])
-    for key, value in lookup.items():
-        #example: lookup = {'0154_1':[2,4]} total no. of mismatches, repeat number
-        myLookUp = myLookUp.append({"loci":key.split("_")[0], "hit_index":int(key.split("_")[1]), "repeat_no":lookup[key][1], "error_no":lookup[key][0]}, ignore_index=True)
-    sortedLookUp = myLookUp.sort_values(by=["loci", "hit_index"])
-    print(sortedLookUp.to_csv(sep='\t', index=False))
-    for item in miru:
-        #array that used to determine repeat number
-        print(Counter(repeats[item]))
-
 miru_repeats = pd.DataFrame(columns = ['sample_prefix'] + miru, index = range(1))
 miru_repeats['sample_prefix'] = sample_prefix
 for item in miru:
     if repeats[item] != []:
         try:
-            repeat = mode(repeats[item])
-            miru_repeats[item][0] = repeat
+            if len(repeats[item]) < args.min_amplicons:
+                repeat = f"{custom_mode(repeats[item])} (Warning 1: Low Coverage)"
+            # elif repeats[item].count(mode(repeats[item])) / len(repeats[item]) <= args.freq and len(repeats[item]) <= args.amplicon_freq: ## If you need to put some minimum number of amplicon for those unfixed alleles, uncomment this line and the flag corresponded.
+            elif repeats[item].count(mode(repeats[item])) / len(repeats[item]) <= args.freq:
+                repeat = f"{custom_mode(repeats[item])} (Warning 2: Unfixed allele)"
+            else:
+                repeat = custom_mode(repeats[item])
         except statistics.StatisticsError:
-            repeat = chooseMode(item, lookup, Counter(repeats[item]))
-            miru_repeats[item][0] = repeat
+            if len(repeats[item]) < args.amplicon_mode:
+                repeat = f"{chooseMode(item, lookup, Counter(repeats[item]))} (Warning 3: Possible polyclonal {modes(repeats[item])}, Low Coverage)"
+            else:
+                repeat = f"{chooseMode(item, lookup, Counter(repeats[item]))} (Warning 4: Possible polyclonal {modes(repeats[item])})"
     else:
-        miru_repeats[item][0] = "ND"
+        repeat = "ND"
+
+    miru_repeats[item][0] = repeat
 
 if args.nofasta:
     if ('.fastq' in args.reads) or ('.gz' in args.reads):
